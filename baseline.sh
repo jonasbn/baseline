@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# iteratate over a list of directories and descend into each one
-# and pull the latest changes from the remote repository
+# iterate over a list of directories and descend into each one
+# and pull the latest changes from the remote repositor
 for dir in $(ls -d */); do
   echo "Directory: $dir"
   cd "$dir" || exit 1
