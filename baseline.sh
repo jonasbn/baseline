@@ -2,6 +2,10 @@
 
 # iterate over a list of directories and descend into each one
 # and pull the latest changes from the remote repositor
+
+# REF:
+# - https://stackoverflow.com/questions/2107945/how-to-loop-over-directories-in-linux
+
 for dir in ./*/; do
   dir=${dir%*/} # remove trailing slash
   echo "Directory: $dir"
