@@ -6,6 +6,9 @@
 # REF:
 # - https://stackoverflow.com/questions/2107945/how-to-loop-over-directories-in-linux
 
+# Add -v for verbose output
+chmod -R u+w .
+
 for dir in ./*/; do
   dir=${dir%*/} # remove trailing slash
   echo "Directory: $dir"
@@ -14,3 +17,6 @@ for dir in ./*/; do
   git pull
   cd ..
 done
+
+# Add -v for verbose output
+chmod -R u-w .
