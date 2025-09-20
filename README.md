@@ -2,13 +2,19 @@
 
 A Go program that creates a baseline of Git repositories for easy searching.
 
-I did [a little write up](https://dev.to/jonasbn/baseline-a-parallel-git-universeconcept-for-easy-searching-k1m) for this repository on dev.to
+I did [a little write up](https://dev.to/jonasbn/baseline-a-parallel-git-universeconcept-for-easy-searching-k1m)
+for this repository on dev.to
 
 ## Overview
 
-baseline integrates with GitHub and Bitbucket to clone repositories into a specified directory, setting permissions to disallow write access, making them suitable for searching rather than active development.
+baseline integrates with GitHub and Bitbucket to clone repositories into a specified
+directory, setting permissions to disallow write access, making them suitable for
+searching rather than active development.
 
-The tool uses `git clone --bare` which creates repositories without working directories - perfect for searching through code without the overhead of checked-out files. The bare repositories are also set to read-only permissions to prevent accidental modifications.
+The tool uses `git clone --bare` which creates repositories without working
+directories - perfect for searching through code without the overhead of
+checked-out files. The bare repositories are also set to read-only permissions
+to prevent accidental modifications.
 
 ## Features
 
@@ -59,11 +65,13 @@ go build
 ### Examples
 
 #### Initialize baseline directory
+
 ```bash
 baseline init -d ./my-baseline
 ```
 
 #### Discover repositories
+
 ```bash
 # List public repositories from GitHub
 baseline discover -o myorg
@@ -73,6 +81,7 @@ baseline discover -s bitbucket -b myusername -p myapppassword -o myorg
 ```
 
 #### Clone repositories
+
 ```bash
 # Clone all public repositories from GitHub organization
 baseline clone -o myorg -d ./baseline
@@ -85,6 +94,7 @@ baseline clone -s bitbucket -b myusername -p myapppassword -o myorg
 ```
 
 #### Update repositories
+
 ```bash
 # Update all existing repositories
 baseline update -o myorg -d ./baseline
@@ -97,7 +107,8 @@ baseline update -o myorg -d ./baseline -v
 
 ### GitHub
 
-Create a personal access token at https://github.com/settings/tokens with appropriate repository access permissions.
+Create a personal access token at [GitHub](https://github.com/settings/tokens) with
+appropriate repository access permissions.
 
 ```bash
 baseline clone -g your_github_token -o organization_name
@@ -105,7 +116,8 @@ baseline clone -g your_github_token -o organization_name
 
 ### Bitbucket
 
-Create an app password at https://bitbucket.org/account/settings/app-passwords/ with repository read permissions.
+Create an app password at [Bitbucket](https://bitbucket.org/account/settings/app-passwords/) with
+repository read permissions.
 
 ```bash
 baseline clone -s bitbucket -b your_username -p your_app_password -o organization_name
@@ -115,7 +127,7 @@ baseline clone -s bitbucket -b your_username -p your_app_password -o organizatio
 
 Repositories are organized in the following structure:
 
-```
+```text
 baseline/
 ├── owner1/
 │   ├── repo1.git/
@@ -126,23 +138,31 @@ baseline/
     └── repo5.git/
 ```
 
-Each repository is cloned as a bare repository (`.git` extension) with read-only permissions.
+Each repository is cloned as a bare repository (`.git` extension) with read-only
+permissions.
 
 ## Pros and Cons of using `git clone --bare`
 
 ### Pros
-- **No working directory**: Smaller disk footprint and no risk of accidental file edits
-- **Optimal for searching**: Perfect for code search tools as there are no checked-out files to confuse search results
+
+- **No working directory**: Smaller disk footprint and no risk of accidental file
+  edits
+- **Optimal for searching**: Perfect for code search tools as there are no
+  checked-out files to confuse search results
 - **Faster operations**: No working tree means faster clones and updates
 - **Safer permissions**: Read-only permissions prevent accidental modifications
-- **Multiple worktrees**: Can create temporary worktrees elsewhere if needed for inspection
+- **Multiple worktrees**: Can create temporary worktrees elsewhere if needed for
+  inspection
 
 ### Cons
+
 - **No working directory**: Cannot directly edit files or run builds in the repository
 - **Tool compatibility**: Some IDEs and Git tools expect a working tree
-- **Limited inspection**: Need to use git commands like `git show` or create temporary worktrees to view files
+- **Limited inspection**: Need to use git commands like `git show` or create
+  temporary worktrees to view files
 
-For baseline's use case of creating searchable code repositories, the pros far outweigh the cons.
+For baseline's use case of creating searchable code repositories, the pros far
+outweigh the cons.
 
 ## Development
 
@@ -169,4 +189,5 @@ go build
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
+for details.
