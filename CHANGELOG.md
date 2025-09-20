@@ -16,12 +16,14 @@
 - Added proper documentation and usage examples
 
 ### Commands Added
+
 - `init`: Initialize baseline directory
 - `discover`: List available repositories
 - `clone`: Clone repositories with concurrent processing
 - `update`: Update existing repositories
 
 ### Features Added
+
 - Support for both GitHub and Bitbucket
 - Authentication support for private repositories
 - Configurable concurrency (default 4 threads)
