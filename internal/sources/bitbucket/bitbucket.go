@@ -121,9 +121,10 @@ func (b *BitbucketClient) convertToRepository(repo BitbucketRepository) types.Re
 	// Extract clone URLs
 	var cloneURL, sshURL string
 	for _, link := range repo.Links.Clone {
-		if link.Name == "https" {
+		switch link.Name {
+		case "https":
 			cloneURL = link.Href
-		} else if link.Name == "ssh" {
+		case "ssh":
 			sshURL = link.Href
 		}
 	}
