@@ -11,16 +11,16 @@ baseline integrates with GitHub and Bitbucket to clone repositories into a speci
 directory, setting permissions to disallow write access, making them suitable for
 searching rather than active development.
 
-The tool uses `git clone --bare` which creates repositories without working
+The tool uses `git clone` which creates repositories without working
 directories - perfect for searching through code without the overhead of
-checked-out files. The bare repositories are also set to read-only permissions
+checked-out files. The repositories are also set to read-only permissions
 to prevent accidental modifications.
 
 ## Features
 
 - Clone repositories from GitHub and Bitbucket organizations
 - Concurrent cloning with configurable thread count
-- Bare repository cloning (no working directory) for optimal searching
+- Repository cloning for optimal searching
 - Read-only permissions to prevent accidental modifications
 - Update existing repositories with latest changes
 - Discover available repositories before cloning
@@ -130,41 +130,15 @@ Repositories are organized in the following structure:
 ```text
 baseline/
 ├── owner1/
-│   ├── repo1.git/
-│   ├── repo2.git/
-│   └── repo3.git/
+│   ├── repo1/
+│   ├── repo2/
+│   └── repo3/
 └── owner2/
-    ├── repo4.git/
-    └── repo5.git/
+    ├── repo4/
+    └── repo5/
 ```
 
-Each repository is cloned as a bare repository (`.git` extension) with read-only
-permissions.
-
-## Notes
-
-### Pros and Cons of using `git clone --bare`
-
-#### Pros
-
-- **No working directory**: Smaller disk footprint and no risk of accidental file
-  edits
-- **Optimal for searching**: Perfect for code search tools as there are no
-  checked-out files to confuse search results
-- **Faster operations**: No working tree means faster clones and updates
-- **Safer permissions**: Read-only permissions prevent accidental modifications
-- **Multiple worktrees**: Can create temporary worktrees elsewhere if needed for
-  inspection
-
-#### Cons
-
-- **No working directory**: Cannot directly edit files or run builds in the repository
-- **Tool compatibility**: Some IDEs and Git tools expect a working tree
-- **Limited inspection**: Need to use git commands like `git show` or create
-  temporary worktrees to view files
-
-For baseline's use case of creating searchable code repositories, the pros far
-outweigh the cons.
+Each repository is cloned as a repository with read-only permissions.
 
 ## Development
 

@@ -49,8 +49,8 @@ func (g *GitOps) CloneRepository(repo types.Repository, targetDir string) types.
 		return result
 	}
 
-	// Clone the repository as bare
-	cmd := exec.Command("git", "clone", "--bare", repo.CloneURL, repoPath)
+	// Clone the repository
+	cmd := exec.Command("git", "clone", repo.CloneURL, repoPath)
 	if g.verbose {
 		fmt.Printf("Cloning %s to %s\n", repo.FullName, repoPath)
 	}
