@@ -1,6 +1,6 @@
 # Change log for baseline
 
-## v0.3.0 2025-09-18 - Go Implementation
+## v0.3.0 2025-09-22 - Go Implementation
 
 - Complete rewrite in Go from original shell script
 - Added support for concurrent cloning with configurable thread count
