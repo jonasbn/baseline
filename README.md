@@ -141,9 +141,11 @@ baseline/
 Each repository is cloned as a bare repository (`.git` extension) with read-only
 permissions.
 
-## Pros and Cons of using `git clone --bare`
+## Notes
 
-### Pros
+### Pros and Cons of using `git clone --bare`
+
+#### Pros
 
 - **No working directory**: Smaller disk footprint and no risk of accidental file
   edits
@@ -154,7 +156,7 @@ permissions.
 - **Multiple worktrees**: Can create temporary worktrees elsewhere if needed for
   inspection
 
-### Cons
+#### Cons
 
 - **No working directory**: Cannot directly edit files or run builds in the repository
 - **Tool compatibility**: Some IDEs and Git tools expect a working tree
