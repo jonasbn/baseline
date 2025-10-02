@@ -29,7 +29,7 @@ This command helps you see what repositories are available before cloning them.`
 		case "github":
 			sourceClient = github.NewGitHubClient(githubToken)
 		case "bitbucket":
-			sourceClient = bitbucket.NewBitbucketClient(bitbucketUser, bitbucketPass)
+			sourceClient = bitbucket.NewBitbucketClient(bitbucketUser, bitbucketToken, verbose)
 		default:
 			return fmt.Errorf("unsupported source: %s (supported: github, bitbucket)", source)
 		}

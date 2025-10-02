@@ -9,14 +9,14 @@ import (
 
 var (
 	// Global flags
-	directory     string
-	githubToken   string
-	bitbucketUser string
-	bitbucketPass string
-	organization  string
-	verbose       bool
-	source        string
-	threads       int
+	directory      string
+	githubToken    string
+	bitbucketUser  string
+	bitbucketToken string
+	organization   string
+	verbose        bool
+	source         string
+	threads        int
 )
 
 // rootCmd represents the base command when called without any subcommands
@@ -43,8 +43,8 @@ func init() {
 	// Global flags available to all commands
 	rootCmd.PersistentFlags().StringVarP(&directory, "directory", "d", "./baseline", "Target directory for the baseline")
 	rootCmd.PersistentFlags().StringVarP(&githubToken, "github-token", "g", "", "GitHub token for accessing private repositories")
-	rootCmd.PersistentFlags().StringVarP(&bitbucketUser, "bitbucket-username", "b", "", "Bitbucket username for accessing private repositories")
-	rootCmd.PersistentFlags().StringVarP(&bitbucketPass, "bitbucket-password", "p", "", "Bitbucket app password for accessing private repositories")
+	rootCmd.PersistentFlags().StringVarP(&bitbucketUser, "bitbucket-username", "u", "", "Bitbucket username or email for API authentication")
+	rootCmd.PersistentFlags().StringVarP(&bitbucketToken, "bitbucket-token", "b", "", "Bitbucket API token (repository, project, or workspace access token)")
 	rootCmd.PersistentFlags().StringVarP(&organization, "organization", "o", "jonasbn", "Organization to fetch repositories from")
 	rootCmd.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "Enable verbose output for debugging")
 	rootCmd.PersistentFlags().StringVarP(&source, "source", "s", "github", "Source platform (github or bitbucket)")

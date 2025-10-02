@@ -55,8 +55,7 @@ go build
 
 - `-d, --directory`: Target directory for the baseline (default: `./baseline`)
 - `-g, --github-token`: GitHub token for accessing private repositories
-- `-b, --bitbucket-username`: Bitbucket username for accessing private repositories
-- `-p, --bitbucket-password`: Bitbucket app password for accessing private repositories
+- `-b, --bitbucket-token`: Bitbucket API token for accessing private repositories
 - `-o, --organization`: Organization to fetch repositories from (default: `jonasbn`)
 - `-s, --source`: Source platform, either `github` or `bitbucket` (default: `github`)
 - `-v, --verbose`: Enable verbose output for debugging
@@ -77,7 +76,7 @@ baseline init -d ./my-baseline
 baseline discover -o myorg
 
 # List repositories from Bitbucket with authentication
-baseline discover -s bitbucket -b myusername -p myapppassword -o myorg
+baseline discover -s bitbucket -b your_api_token -o myorg
 ```
 
 #### Clone repositories
@@ -90,7 +89,7 @@ baseline clone -o myorg -d ./baseline
 baseline clone -g mytoken -o myorg -d ./baseline -t 8 -v
 
 # Clone from Bitbucket
-baseline clone -s bitbucket -b myusername -p myapppassword -o myorg
+baseline clone -s bitbucket -b your_api_token -o myorg
 ```
 
 #### Update repositories
@@ -116,12 +115,18 @@ baseline clone -g your_github_token -o organization_name
 
 ### Bitbucket
 
-Create an app password at [Bitbucket](https://bitbucket.org/account/settings/app-passwords/) with
-repository read permissions.
+Create an API token at [Bitbucket](https://bitbucket.org/account/settings/access-management/api-tokens) with
+repository read permissions. You can create either:
+
+- **Repository Access Token**: For specific repositories
+- **Project Access Token**: For all repositories in a project  
+- **Workspace Access Token**: For all repositories in a workspace
 
 ```bash
-baseline clone -s bitbucket -b your_username -p your_app_password -o organization_name
+baseline clone -s bitbucket -b your_api_token -o organization_name
 ```
+
+**Note:** App passwords are deprecated by Bitbucket in favor of API tokens for better security and granular permissions.
 
 ## Directory Structure
 
@@ -130,15 +135,15 @@ Repositories are organized in the following structure:
 ```text
 baseline/
 ├── owner1/
-│   ├── repo1/
-│   ├── repo2/
-│   └── repo3/
+│   ├── repo1.git/
+│   ├── repo2.git/
+│   └── repo3.git/
 └── owner2/
-    ├── repo4/
-    └── repo5/
+    ├── repo4.git/
+    └── repo5.git/
 ```
 
-Each repository is cloned as a repository with read-only permissions.
+Each repository is cloned as a bare repository (`.git` extension) with read-only permissions.
 
 ## Development
 

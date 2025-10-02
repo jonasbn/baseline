@@ -5,7 +5,9 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
+	"net/http/httputil"
 	"time"
 
 	"github.com/jonasbn/baseline/internal/types"
@@ -13,10 +15,11 @@ import (
 
 // BitbucketClient implements the RepositorySource interface for Bitbucket
 type BitbucketClient struct {
-	username    string
-	appPassword string
-	httpClient  *http.Client
-	baseURL     string
+	username   string
+	apiToken   string
+	debug      bool
+	httpClient *http.Client
+	baseURL    string
 }
 
 // BitbucketRepository represents a Bitbucket repository response
@@ -48,10 +51,13 @@ type BitbucketResponse struct {
 }
 
 // NewBitbucketClient creates a new Bitbucket client
-func NewBitbucketClient(username, appPassword string) *BitbucketClient {
+// username should be your Bitbucket username or email
+// apiToken should be a repository, project, or workspace access token
+func NewBitbucketClient(username, apiToken string, debug bool) *BitbucketClient {
 	return &BitbucketClient{
-		username:    username,
-		appPassword: appPassword,
+		username: username,
+		apiToken: apiToken,
+		debug:    debug,
 		httpClient: &http.Client{
 			Timeout: 30 * time.Second,
 		},
@@ -67,7 +73,7 @@ func (b *BitbucketClient) GetName() string {
 // GetRepositories fetches all repositories for the given organization
 func (b *BitbucketClient) GetRepositories(ctx context.Context, organization string) ([]types.Repository, error) {
 	var allRepos []types.Repository
-	url := fmt.Sprintf("%s/repositories/%s?pagelen=100&sort=-updated_on", b.baseURL, organization)
+	url := fmt.Sprintf("%s/repositories/%s?role=member&pagelen=100", b.baseURL, organization)
 
 	for url != "" {
 		repos, nextURL, err := b.getRepositoriesPage(ctx, url)
@@ -89,9 +95,39 @@ func (b *BitbucketClient) getRepositoriesPage(ctx context.Context, url string) (
 	}
 
 	// Add basic auth if credentials are provided
-	if b.username != "" && b.appPassword != "" {
-		auth := base64.StdEncoding.EncodeToString([]byte(b.username + ":" + b.appPassword))
+	if b.username != "" && b.apiToken != "" {
+		auth := base64.StdEncoding.EncodeToString([]byte(b.username + ":" + b.apiToken))
 		req.Header.Set("Authorization", "Basic "+auth)
+	}
+
+	// Debug logging: print the entire request
+	if b.debug {
+		fmt.Println("\n=== DEBUG: Bitbucket HTTP Request ===")
+		fmt.Printf("Method: %s\n", req.Method)
+		fmt.Printf("URL: %s\n", req.URL.String())
+		fmt.Printf("Headers:\n")
+		for name, values := range req.Header {
+			for _, value := range values {
+				if name == "Authorization" {
+					// Mask the token for security, but show the format
+					fmt.Printf("  %s: %s\n", name, "Basic [BASE64_ENCODED_USERNAME:TOKEN]")
+				} else {
+					fmt.Printf("  %s: %s\n", name, value)
+				}
+			}
+		}
+
+		// Show equivalent curl command
+		fmt.Printf("\nEquivalent curl command:\n")
+		fmt.Printf("curl -v -u '%s:[TOKEN]' \\\n", b.username)
+		fmt.Printf("  -H 'Accept: application/json' \\\n")
+		fmt.Printf("  '%s'\n", req.URL.String())
+		fmt.Println("========================================\n")
+
+		// Also dump the raw request if needed
+		if reqDump, err := httputil.DumpRequestOut(req, false); err == nil {
+			fmt.Printf("Raw HTTP Request:\n%s\n", string(reqDump))
+		}
 	}
 
 	resp, err := b.httpClient.Do(req)
@@ -100,8 +136,24 @@ func (b *BitbucketClient) getRepositoriesPage(ctx context.Context, url string) (
 	}
 	defer resp.Body.Close()
 
+	// Debug logging: print response details
+	if b.debug {
+		fmt.Println("=== DEBUG: Bitbucket HTTP Response ===")
+		fmt.Printf("Status: %s (%d)\n", resp.Status, resp.StatusCode)
+		fmt.Printf("Response Headers:\n")
+		for name, values := range resp.Header {
+			for _, value := range values {
+				fmt.Printf("  %s: %s\n", name, value)
+			}
+		}
+		fmt.Println("======================================\n")
+	}
+
 	if resp.StatusCode != http.StatusOK {
-		return nil, "", fmt.Errorf("Bitbucket API returned status %d", resp.StatusCode)
+		if b.debug {
+			log.Printf("DEBUG: Request failed with status %d", resp.StatusCode)
+		}
+		return nil, "", fmt.Errorf("bitbucket API returned status %d", resp.StatusCode)
 	}
 
 	var response BitbucketResponse
