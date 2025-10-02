@@ -33,7 +33,7 @@ func (g *GitOps) CloneRepository(repo types.Repository, targetDir string) types.
 	}
 
 	// Create the repository directory path
-	repoPath := filepath.Join(targetDir, repo.Owner, repo.Name+".git")
+	repoPath := filepath.Join(targetDir, repo.Owner, repo.Name)
 
 	// Check if repository already exists
 	if _, err := os.Stat(repoPath); err == nil {
@@ -83,7 +83,7 @@ func (g *GitOps) UpdateRepository(repo types.Repository, targetDir string) types
 		Duration:   0,
 	}
 
-	repoPath := filepath.Join(targetDir, repo.Owner, repo.Name+".git")
+	repoPath := filepath.Join(targetDir, repo.Owner, repo.Name)
 
 	// Check if repository exists
 	if _, err := os.Stat(repoPath); os.IsNotExist(err) {
@@ -146,7 +146,7 @@ func (g *GitOps) UpdateRepository(repo types.Repository, targetDir string) types
 
 // RepositoryExists checks if a repository already exists in the target directory
 func (g *GitOps) RepositoryExists(repo types.Repository, targetDir string) bool {
-	repoPath := filepath.Join(targetDir, repo.Owner, repo.Name+".git")
+	repoPath := filepath.Join(targetDir, repo.Owner, repo.Name)
 	_, err := os.Stat(repoPath)
 	return err == nil
 }

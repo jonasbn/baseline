@@ -9,6 +9,7 @@
 - **Auto-detection**: GitHub client now automatically detects and handles both organization and personal account repositories
 
 ### Changed  
+- **Directory Structure**: Removed `.git` postfix from repository directory names for cleaner organization
 - **Bitbucket Authentication**: Now requires both username (`-u`) and API token (`-b`) instead of just token
 - **Command Flags**: Added `--bitbucket-username` flag alongside existing `--bitbucket-token` flag
 - **Documentation**: Updated README with SSH usage examples and Bitbucket API token guidance

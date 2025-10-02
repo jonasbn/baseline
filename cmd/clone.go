@@ -94,7 +94,7 @@ when you have SSH keys configured and want to avoid HTTPS authentication issues.
 					fmt.Printf("❌ %s: %v\n", result.Repository.FullName, result.Error)
 				}
 				if result.Error.Error() == fmt.Sprintf("repository already exists at %s",
-					filepath.Join(directory, result.Repository.Owner, result.Repository.Name+".git")) {
+					filepath.Join(directory, result.Repository.Owner, result.Repository.Name)) {
 					skipped++
 				} else {
 					failed++
