@@ -187,15 +187,15 @@ Repositories are organized in the following structure:
 ```text
 baseline/
 ├── owner1/
-│   ├── repo1.git/
-│   ├── repo2.git/
-│   └── repo3.git/
+│   ├── repo1/
+│   ├── repo2/
+│   └── repo3/
 └── owner2/
-    ├── repo4.git/
-    └── repo5.git/
+    ├── repo4/
+    └── repo5/
 ```
 
-Each repository is cloned as a bare repository (`.git` extension) with read-only permissions.
+Each repository is cloned as a bare repository with read-only permissions.
 
 ## Development
 

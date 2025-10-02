@@ -36,7 +36,7 @@ func TestRepositoryExists(t *testing.T) {
 	}
 
 	// Create the repository directory
-	repoPath := filepath.Join(tempDir, repo.Owner, repo.Name+".git")
+	repoPath := filepath.Join(tempDir, repo.Owner, repo.Name)
 	err := os.MkdirAll(repoPath, 0755)
 	if err != nil {
 		t.Fatalf("Failed to create test repository directory: %v", err)

@@ -1,19 +1,35 @@
 # Change log for baseline
 
+## v0.5.0 2025-10-02 - Directory Structure Cleanup
+
+### Changed
+
+- **Directory Structure**: Removed `.git` postfix from repository directory names for cleaner organization
+  - Repositories are now stored as `baseline/owner/repo-name/` instead of `baseline/owner/repo-name.git/`
+  - Updated all cloning, updating, and existence checking functions to use the new naming convention
+  - Provides a cleaner and more intuitive directory structure for users
+
+### Fixed
+
+- **Test Updates**: Updated unit tests to reflect the new directory naming convention
+
 ## v0.4.0 2025-10-02 - SSH Support and Bitbucket Authentication Updates
 
 ### Added
+
 - **SSH Support**: Added `--ssh` flag to `clone` and `update` commands for using SSH URLs instead of HTTPS
 - **Enhanced Bitbucket Authentication**: Updated to use username + API token combination (required by Bitbucket API)
 - **Debug Logging**: Added comprehensive HTTP request/response debugging for Bitbucket API calls with verbose flag
 - **Auto-detection**: GitHub client now automatically detects and handles both organization and personal account repositories
 
-### Changed  
+### Changed
+
 - **Bitbucket Authentication**: Now requires both username (`-u`) and API token (`-b`) instead of just token
 - **Command Flags**: Added `--bitbucket-username` flag alongside existing `--bitbucket-token` flag
 - **Documentation**: Updated README with SSH usage examples and Bitbucket API token guidance
 
 ### Fixed
+
 - **Bitbucket API Integration**: Corrected authentication method to match Bitbucket's actual API requirements
 - **GitHub Repository Detection**: Fixed handling of personal accounts vs organizations
 
