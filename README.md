@@ -90,6 +90,12 @@ baseline clone -g mytoken -o myorg -d ./baseline -t 8 -v
 
 # Clone from Bitbucket
 baseline clone -s bitbucket -b your_api_token -o myorg
+
+# Clone using SSH URLs instead of HTTPS (requires SSH keys configured)
+baseline clone -g mytoken -o myorg -d ./baseline --ssh
+
+# Clone from Bitbucket using SSH
+baseline clone -s bitbucket -u username -b your_api_token -o myorg --ssh
 ```
 
 #### Update repositories
@@ -100,6 +106,12 @@ baseline update -o myorg -d ./baseline
 
 # Update with verbose output
 baseline update -o myorg -d ./baseline -v
+
+# Update using SSH URLs instead of HTTPS
+baseline update -g mytoken -o myorg -d ./baseline --ssh
+
+# Update from Bitbucket using SSH
+baseline update -s bitbucket -u username -b your_api_token -o myorg --ssh
 ```
 
 ## Authentication
@@ -127,6 +139,46 @@ baseline clone -s bitbucket -b your_api_token -o organization_name
 ```
 
 **Note:** App passwords are deprecated by Bitbucket in favor of API tokens for better security and granular permissions.
+
+## SSH Support
+
+Both the `clone` and `update` commands support an `--ssh` flag to use SSH URLs instead of HTTPS URLs for Git operations. This is useful when:
+
+- You have SSH keys configured for GitHub/Bitbucket
+- You want to avoid authentication prompts during git operations
+- You're running in automated environments where SSH keys are preferred
+- You're behind corporate firewalls that block HTTPS git operations
+
+### SSH Requirements
+
+Before using the `--ssh` flag, ensure you have:
+
+1. **SSH keys configured** on your local machine
+2. **SSH keys added** to your GitHub/Bitbucket account
+3. **SSH agent running** (if using password-protected keys)
+
+### SSH Usage
+
+```bash
+# Test SSH connectivity first
+ssh -T git@github.com
+ssh -T git@bitbucket.org
+
+# Clone using SSH
+baseline clone -g token -o myorg --ssh
+
+# Update using SSH
+baseline update -g token -o myorg --ssh
+```
+
+### SSH vs HTTPS
+
+| Method | Pros | Cons |
+|--------|------|------|
+| **HTTPS** | Simple setup, works everywhere | Requires token authentication for each operation |
+| **SSH** | No authentication prompts, better for automation | Requires SSH key setup, may be blocked by firewalls |
+
+The `--ssh` flag automatically converts HTTPS clone URLs to SSH format. If a repository doesn't have an SSH URL available, it falls back to HTTPS with a warning.
 
 ## Directory Structure
 

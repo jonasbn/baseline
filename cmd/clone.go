@@ -13,6 +13,10 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var (
+	useSSH bool
+)
+
 // cloneCmd represents the clone command
 var cloneCmd = &cobra.Command{
 	Use:   "clone",
@@ -21,7 +25,10 @@ var cloneCmd = &cobra.Command{
 directory and update existing ones.
 
 This command fetches all repositories from the organization and clones them as bare 
-repositories, setting read-only permissions for searching purposes.`,
+repositories, setting read-only permissions for searching purposes.
+
+Use the --ssh flag to clone using SSH URLs instead of HTTPS URLs, which is useful 
+when you have SSH keys configured and want to avoid HTTPS authentication issues.`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		ctx := context.Background()
 
@@ -41,6 +48,11 @@ repositories, setting read-only permissions for searching purposes.`,
 			fmt.Printf("Cloning repositories from %s for organization: %s\n", source, organization)
 			fmt.Printf("Target directory: %s\n", directory)
 			fmt.Printf("Using %d concurrent threads\n", threads)
+			if useSSH {
+				fmt.Printf("Using SSH URLs for cloning\n")
+			} else {
+				fmt.Printf("Using HTTPS URLs for cloning\n")
+			}
 		}
 
 		// Create target directory if it doesn't exist
@@ -52,6 +64,20 @@ repositories, setting read-only permissions for searching purposes.`,
 		repositories, err := sourceClient.GetRepositories(ctx, organization)
 		if err != nil {
 			return fmt.Errorf("failed to fetch repositories: %w", err)
+		}
+
+		// Convert to SSH URLs if --ssh flag is set
+		if useSSH {
+			for i := range repositories {
+				if repositories[i].SSHURL != "" {
+					repositories[i].CloneURL = repositories[i].SSHURL
+					if verbose {
+						fmt.Printf("Using SSH URL for %s: %s\n", repositories[i].FullName, repositories[i].SSHURL)
+					}
+				} else if verbose {
+					fmt.Printf("Warning: No SSH URL available for %s, using HTTPS\n", repositories[i].FullName)
+				}
+			}
 		}
 
 		fmt.Printf("Found %d repositories to clone\n", len(repositories))
@@ -97,4 +123,5 @@ repositories, setting read-only permissions for searching purposes.`,
 
 func init() {
 	rootCmd.AddCommand(cloneCmd)
+	cloneCmd.Flags().BoolVar(&useSSH, "ssh", false, "Use SSH URLs for cloning instead of HTTPS")
 }
