@@ -5,5 +5,6 @@
     "first-line-heading": false,
     "no-emphasis-as-heading": false,
     "link-fragments": false,
-    "no-bare-urls": false
+    "no-bare-urls": false,
+    "no-duplicate-heading": false
 }
