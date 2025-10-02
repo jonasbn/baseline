@@ -1,5 +1,22 @@
 # Change log for baseline
 
+## v0.4.0 2025-10-02 - SSH Support and Bitbucket Authentication Updates
+
+### Added
+- **SSH Support**: Added `--ssh` flag to `clone` and `update` commands for using SSH URLs instead of HTTPS
+- **Enhanced Bitbucket Authentication**: Updated to use username + API token combination (required by Bitbucket API)
+- **Debug Logging**: Added comprehensive HTTP request/response debugging for Bitbucket API calls with verbose flag
+- **Auto-detection**: GitHub client now automatically detects and handles both organization and personal account repositories
+
+### Changed  
+- **Bitbucket Authentication**: Now requires both username (`-u`) and API token (`-b`) instead of just token
+- **Command Flags**: Added `--bitbucket-username` flag alongside existing `--bitbucket-token` flag
+- **Documentation**: Updated README with SSH usage examples and Bitbucket API token guidance
+
+### Fixed
+- **Bitbucket API Integration**: Corrected authentication method to match Bitbucket's actual API requirements
+- **GitHub Repository Detection**: Fixed handling of personal accounts vs organizations
+
 ## v0.3.1 2025-09-22 - minor bug fix release, update recommended
 
 - Removed `--bare` from git clone commands, this was not what I wanted
