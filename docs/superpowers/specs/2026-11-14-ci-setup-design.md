@@ -22,9 +22,12 @@ every PR and push to `main`.
 - Go version read from `go.mod` via `actions/setup-go`'s `go-version-file`,
   not hardcoded, so it tracks future `go.mod` bumps automatically.
 - Add a `github-actions` entry to `.github/dependabot.yml` (now that
-  workflow files exist to keep current), using the same two-group pattern
-  already used for `gomod` (`major-updates` individually, `minor-and-patch`
-  batched, 7-day cooldown).
+  workflow files exist to keep current), using a two-group pattern —
+  `major-updates` and `minor-and-patch`, each batching its own update
+  types, 7-day cooldown — unlike `gomod`'s single `minor-and-patch` group
+  (majors ungrouped there). GitHub Actions gets majors grouped too because
+  coordinated action releases (e.g. `actions/upload-artifact` and
+  `actions/download-artifact`) need their major bumps to land together.
 - CI must be green on its first run. Local dry-runs of each tool surfaced
   pre-existing findings unrelated to CI itself:
   - `go vet`: two `fmt.Println` calls in
