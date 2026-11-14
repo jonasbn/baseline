@@ -122,7 +122,7 @@ func (b *BitbucketClient) getRepositoriesPage(ctx context.Context, url string) (
 		fmt.Printf("curl -v -u '%s:[TOKEN]' \\\n", b.username)
 		fmt.Printf("  -H 'Accept: application/json' \\\n")
 		fmt.Printf("  '%s'\n", req.URL.String())
-		fmt.Println("========================================\n")
+		fmt.Println("========================================")
 
 		// Also dump the raw request if needed
 		if reqDump, err := httputil.DumpRequestOut(req, false); err == nil {
@@ -134,7 +134,7 @@ func (b *BitbucketClient) getRepositoriesPage(ctx context.Context, url string) (
 	if err != nil {
 		return nil, "", fmt.Errorf("failed to make request: %w", err)
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	// Debug logging: print response details
 	if b.debug {
@@ -146,7 +146,7 @@ func (b *BitbucketClient) getRepositoriesPage(ctx context.Context, url string) (
 				fmt.Printf("  %s: %s\n", name, value)
 			}
 		}
-		fmt.Println("======================================\n")
+		fmt.Println("======================================")
 	}
 
 	if resp.StatusCode != http.StatusOK {

@@ -90,7 +90,7 @@ func (g *GitHubClient) getRepositoriesPage(ctx context.Context, organization str
 	if err != nil {
 		return nil, false, fmt.Errorf("failed to make request: %w", err)
 	}
-	defer resp.Body.Close()
+	defer func(r *http.Response) { _ = r.Body.Close() }(resp)
 
 	if resp.StatusCode == http.StatusNotFound {
 		// Try user endpoint if organization endpoint returns 404
@@ -110,7 +110,7 @@ func (g *GitHubClient) getRepositoriesPage(ctx context.Context, organization str
 		if err != nil {
 			return nil, false, fmt.Errorf("failed to make user request: %w", err)
 		}
-		defer resp.Body.Close()
+		defer func(r *http.Response) { _ = r.Body.Close() }(resp)
 	}
 
 	if resp.StatusCode != http.StatusOK {
