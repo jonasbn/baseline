@@ -17,3 +17,23 @@ updates:
           - "patch"
     cooldown:
       default-days: 7
+
+  # Keep GitHub Actions up to date
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    groups:
+      major-updates:
+        patterns:
+          - "*"
+        update-types:
+          - "major"
+      minor-and-patch:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+    cooldown:
+      default-days: 7
