@@ -79,5 +79,5 @@ func TestSetReadOnlyPermissions(t *testing.T) {
 	}
 
 	// Cleanup: restore write permissions so temp dir can be cleaned up
-	defer gitOps.setWritePermissions(tempDir)
+	defer func() { _ = gitOps.setWritePermissions(tempDir) }()
 }

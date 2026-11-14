@@ -115,7 +115,7 @@ func (g *GitOps) UpdateRepository(repo types.Repository, targetDir string) types
 
 	if err := cmd.Run(); err != nil {
 		// Restore read-only permissions even if update fails
-		g.setReadOnlyPermissions(repoPath)
+		_ = g.setReadOnlyPermissions(repoPath)
 		result.Error = fmt.Errorf("failed to update repository %s: %w", repo.FullName, err)
 		result.Duration = time.Since(start)
 		return result
