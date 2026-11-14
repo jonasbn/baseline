@@ -173,10 +173,10 @@ baseline update -g token -o myorg --ssh
 
 ### SSH vs HTTPS
 
-| Method | Pros | Cons |
-|--------|------|------|
-| **HTTPS** | Simple setup, works everywhere | Requires token authentication for each operation |
-| **SSH** | No authentication prompts, better for automation | Requires SSH key setup, may be blocked by firewalls |
+| Method    | Pros                                             | Cons                                                |
+|-----------|--------------------------------------------------|-----------------------------------------------------|
+| **HTTPS** | Simple setup, works everywhere                   | Requires token authentication for each operation    |
+| **SSH**   | No authentication prompts, better for automation | Requires SSH key setup, may be blocked by firewalls |
 
 The `--ssh` flag automatically converts HTTPS clone URLs to SSH format. If a repository doesn't have an SSH URL available, it falls back to HTTPS with a warning.
 
